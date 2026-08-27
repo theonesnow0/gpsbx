@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "46040975678",
+    "firebase_url": "https://wall-plast-default-rtdb.firebaseio.com",
+    "project_id": "wall-plast",
+    "storage_bucket": "wall-plast.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:46040975678:android:8f143911e5fc95f45c446f",
+        "android_client_info": {
+          "package_name": "com.dpakohgames.WallPlast"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvMGngNQkKmrRMQ2BWVqTc_qNLsF3qBHw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

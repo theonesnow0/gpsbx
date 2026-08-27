@@ -1,0 +1,99 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - ground
+  - revolverSpawn
+  - revolverBullet
+  - logic
+  - Bullet
+  - menuSkin
+  - menuButtons
+  - menuCamera
+  - signalE
+  - ammoGUI
+  - pricel
+  - staminaSlider
+  - staminaText
+  - staminaBack
+  - staminaFill
+  - Canvas
+  - reloadValue
+  - shootValue
+  - playerSpawn
+  - nickname
+  - globalSounds
+  - notification
+  - cubegunSpawn
+  - cubegunCube
+  - mobileButtons
+  - joystickObject
+  - runningButton
+  - jumpButton
+  - crouchButton
+  - weaponShootButton
+  - sensitivitySlider
+  - nickHealthText
+  - healthValue
+  - settingsPopup
+  - chatGUI
+  - gameGUI
+  - healthSlider
+  - deathScreen
+  - reloadText
+  - shootText
+  - PlayerWithController
+  - cameraMode
+  - weaponThrow
+  - weaponReload
+  - weaponOsmotr
+  - reset
+  - dance
+  - playButton
+  - settingButton
+  - setiingsCloseButton
+  - respawnButton
+  - menuButton
+  - disconnectButton
+  - ignoreTouch
+  - lightSettings
+  - gameModifiersObject
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - weaponSpawn
+  - Water
+  - UI
+  - IgnoreThisTagLayer
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 8
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: "\u043A\u0440\u0430\u0441\u043D\u044B\u0435 \u043A\u0438\u0440\u043F\u0438\u0447\u0438
+    Variant 1"
+  m_Shader: {fileID: 4800000, guid: a581d71655f3d4a498fdd997eb413e48, type: 3}
+  m_Parent: {fileID: 2100000, guid: ccf4c66807bca4346b8527c66a700bed, type: 2}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
+  m_LightmapFlags: 4
+  m_EnableInstancingVariants: 0
+  m_DoubleSidedGI: 0
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
+  disabledShaderPasses: []
+  m_LockedProperties: 
+  m_SavedProperties:
+    serializedVersion: 3
+    m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 2800000, guid: b6d1f4f19231f0f44bf26ecfa8a6e76d, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    m_Ints: []
+    m_Floats:
+    - _GlossyReflections: 1
+    - _SpecularHighlights: 1
+    - _UVSec: 0
+    m_Colors:
+    - _UVOffsetX: {r: -0.25, g: 0.01, b: 0, a: 0}
+    - _UVOffsetY: {r: -0.12, g: 0, b: 0, a: 0}
+    - _UVScaleX: {r: 0.25, g: 1, b: 0, a: 0}
+    - _UVScaleY: {r: 0.25, g: 1, b: 0, a: 0}
+  m_BuildTextureStacks: []
