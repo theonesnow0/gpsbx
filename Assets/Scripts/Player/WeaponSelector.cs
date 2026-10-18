@@ -7,8 +7,6 @@ public class WeaponSelector : MonoBehaviour {
     [SerializeField] List<WeaponData> m_weapons = new();
     [SerializeField] Transform m_parent;
 
-    [Space]
-    [Header("Runtime-filled Variables")]
     public WeaponData activeWeapon;
 
     void Start() {

@@ -1,0 +1,3 @@
+:root {
+    -unity-font-definition: url("project://database/Assets/TextMesh%20Pro/Fonts/Lato-Regular%20SDF.asset?fileID=11400000&guid=ec82ea8cf58fe0340a5c21a610f51719&type=2#Lato-Regular SDF");
+}

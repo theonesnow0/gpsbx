@@ -8,23 +8,20 @@ public enum WeaponType {
     LazerGun
 }
 
-[CreateAssetMenu(fileName = "WeaponData", menuName = "Weapons/Weapon Scriptable Object", order = 1)]
+[CreateAssetMenu(fileName = "Weapon Data", menuName = "Weapons/Weapon Scriptable Object", order = 1)]
 public class WeaponData : ScriptableObject {
-#region Weapon Main Data
     public WeaponType weaponType;
     public string weaponName;
     public GameObject modelPrefab;
-#endregion
 
-#region Gun Visuals
+    public WeaponDamageConfig weaponDamageConfig;
     public WeaponShootConfig weaponShootConfig;
     public WeaponTrailConfig weaponTrailConfig;
-#endregion
+    const float TRAIL_SIM_SPEED = 400f;
 
-#region Weapon Logic
     MonoBehaviour m_activeMonoBehaviour;
     GameObject m_model;
-    float m_lastShootTime = 0f;
+    float m_lastFireTime = 0f;
     ParticleSystem m_particleSystem;
     ObjectPool<TrailRenderer> m_trailPool;
 
@@ -33,27 +30,31 @@ public class WeaponData : ScriptableObject {
         m_trailPool = new(m_CreateTrail);
 
         m_model = Instantiate(modelPrefab, parent);
-        // m_model.transform.SetLocalPositionAndRotation(spawnPosition, Quaternion.Euler(spawnRotation));
         m_particleSystem = m_model.GetComponentInChildren<ParticleSystem>();
     }
 
-    public void Fire() {
+    public void Fire(Ray ray) {
+        /* return unless weapon is not none */
         if (weaponType is WeaponType.None) return;
-        
-        m_particleSystem.Play();
 
-        var shootOrigin = m_particleSystem.transform.position;
-        var shootDirection = m_particleSystem.transform.forward.normalized;
+        // if (Time.time > weaponShootConfig.fireRate + m_lastFireTime) {
+            // m_lastFireTime = Time.time;
 
-        var raycastResult = Physics.Raycast(shootOrigin, shootDirection, out RaycastHit hitInfo, weaponShootConfig.maxDistance, weaponShootConfig.hitMask);
-        var endPoint = raycastResult
-            ? hitInfo.point
-            : shootOrigin + (shootDirection * weaponTrailConfig.trailMissDistance);
+            var hitPoint = Physics.Raycast(ray, out var hitInfo, weaponShootConfig.maxDistance, weaponShootConfig.hitMask)
+                ? hitInfo.point
+                : ray.origin + (ray.direction * weaponShootConfig.maxDistance);
+            var collider = hitInfo.collider;
 
-        m_activeMonoBehaviour.StartCoroutine(PlayTrail(shootOrigin, endPoint, hitInfo));
+            if (collider != null)
+                if (collider.TryGetComponent<IDamageable>(out var damageable))
+                    damageable.TakeDamage(weaponDamageConfig.EvaluateDamage(Vector3.Distance(ray.origin, hitInfo.point)));
+
+            m_particleSystem.Play();
+            m_activeMonoBehaviour.StartCoroutine(PlayTrail(m_particleSystem.transform.position, hitPoint));
+        // }
     }
 
-    public IEnumerator PlayTrail(Vector3 start, Vector3 end, RaycastHit hitInfo) {
+    public IEnumerator PlayTrail(Vector3 start, Vector3 end) {
         var instance = m_trailPool.Get();
         instance.gameObject.SetActive(true);
         instance.transform.position = start;
@@ -69,7 +70,7 @@ public class WeaponData : ScriptableObject {
                 end,
                 Mathf.Clamp01(1f - (remainingDistance / distance))
             );
-            remainingDistance -= weaponTrailConfig.trailSimulationSpeed * Time.deltaTime;
+            remainingDistance -= TRAIL_SIM_SPEED * Time.deltaTime;
 
             yield return null;
         }
@@ -97,5 +98,4 @@ public class WeaponData : ScriptableObject {
 
         return trailRenderer;
     }
-#endregion
 }

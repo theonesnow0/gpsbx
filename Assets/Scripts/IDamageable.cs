@@ -1,10 +1,8 @@
-#nullable disable
-
 using UnityEngine;
 
-/// <summary>
-/// Interface for entities with health
-/// </summary>
 public interface IDamageable {
-    void TakeDamage(float amount);
+    public float health { get; set; }
+    public float maxHealth => 100f;
+
+    public void TakeDamage(float damageAmount);
 }

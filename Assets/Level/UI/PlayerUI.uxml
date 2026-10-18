@@ -1,0 +1,19 @@
+<ui:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/Level/UI/DefaultUSS.uss?fileID=7433441132597879392&amp;guid=fa33cd7b905613a4d82e216122775c43&amp;type=3#DefaultUSS"/>
+    <ui:VisualElement name="VisualElement" style="flex-grow: 1; margin-top: 2px; margin-left: 2px; margin-bottom: 2px; margin-right: 2px; flex-direction: row;">
+        <ui:VisualElement style="flex-grow: 1; flex-shrink: 1; align-items: flex-start; justify-content: space-between;">
+            <ui:VisualElement style="flex-direction: row; align-items: flex-start; justify-content: flex-start;">
+                <ui:Button text="&#10;" name="MenuButton" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); width: 32px; height: 32px;"/>
+                <ui:ProgressBar value="22" title="my-progress" name="HealthBar" style="justify-content: center;"/>
+            </ui:VisualElement>
+            <ui:ScrollView name="ChatView">
+                <ui:Label text="Label"/>
+            </ui:ScrollView>
+        </ui:VisualElement>
+        <ui:VisualElement style="flex-grow: 1; align-self: flex-start; align-content: flex-start; align-items: flex-start; justify-content: flex-end; flex-direction: row; flex-shrink: 1;">
+            <ui:Image name="PlayerCountBg" style="background-image: url(&quot;project://database/Assets/Art/Textures/Sprites/PlayerCount_BG.svg?fileID=7388822144124034973&amp;guid=47425f53e4ad75e49956d1f6b92d6797&amp;type=3#PlayerCount_BG&quot;); height: 32px; width: 32px;">
+                <ui:Label text="0" name="PlayerCount" style="-unity-text-align: upper-center; text-overflow: ellipsis; margin-right: 2px; margin-top: 2px; padding-left: 2px; padding-top: 5px; padding-bottom: 5px; color: rgb(255, 255, 255);"/>
+            </ui:Image>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

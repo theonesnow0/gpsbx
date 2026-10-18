@@ -56,5 +56,16 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "profe test backup(0.6.9.3).slnx"
+    "files.associations": {
+        "*.asset": "yaml",
+        "*.meta": "yaml",
+        "*.prefab": "yaml",
+        "*.unity": "yaml",
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "*.sln": "*.csproj",
+        "*.slnx": "*.csproj"
+    },
+    "dotnet.defaultSolution": "Grind Plast.slnx"
 }

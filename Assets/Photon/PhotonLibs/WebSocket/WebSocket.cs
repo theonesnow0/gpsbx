@@ -15,7 +15,7 @@
 #endif
 
 
-namespace ExitGames.Client.Photon
+namespace Photon.Client
 {
     using System;
 
@@ -58,7 +58,7 @@ namespace ExitGames.Client.Photon
         private Action<int, string> errorCallback;
         private Action<int, string> closeCallback;
         // logging callback
-        public Action<DebugLevel, string> DebugReturn { get; set; }
+        public Action<LogLevel, string> DebugReturn { get; set; }
 
 
         public WebSocket(Uri url, string proxyAddress, Action openCallback, Action<byte[], int>  recvCallback, Action<int, string> errorCallback, Action<int, string> closeCallback, string protocols = null)
@@ -105,17 +105,17 @@ namespace ExitGames.Client.Photon
                                       {
                                           case WebSocketSharp.LogLevel.Trace:
                                           case WebSocketSharp.LogLevel.Debug:
-                                              DebugReturn(DebugLevel.ALL, s);
+                                              DebugReturn(LogLevel.Debug, s);
                                               break;
                                           case WebSocketSharp.LogLevel.Info:
-                                              DebugReturn(DebugLevel.INFO, s);
+                                              DebugReturn(LogLevel.Info, s);
                                               break;
                                           case WebSocketSharp.LogLevel.Warn:
-                                              DebugReturn(DebugLevel.WARNING, s);
+                                              DebugReturn(LogLevel.Warning, s);
                                               break;
                                           case WebSocketSharp.LogLevel.Error:
                                           case WebSocketSharp.LogLevel.Fatal:
-                                              DebugReturn(DebugLevel.ERROR, s);
+                                              DebugReturn(LogLevel.Error, s);
                                               break;
                                       }
                                   };
