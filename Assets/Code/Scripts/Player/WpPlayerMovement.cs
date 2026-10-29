@@ -1,45 +1,97 @@
 using Fusion;
 using UnityEngine;
 using Wp.Cinematic;
-using Wp.Network;
 
 namespace Wp.Player {
     [type: RequireComponent(typeof(CharacterController)), DisallowMultipleComponent]
     public class WpPlayerMovement : NetworkBehaviour {
-        [field: SerializeField, Header(@"Dependencies")] CharacterController m_characterController;
+        [field: SerializeField] private CharacterController m_CharacterController;
+        [field: SerializeField] private WpPlayer m_Player;
+        [field: SerializeField] private Transform m_Head;
 
-        [field: Header(@"Movement Settings")] public float playerSpeed = 10f;
-        const float SPRINT_SPEED_MULTIPLIER = 1.2f;
+        public float playerSpeed => 16F;
+        private readonly float m_AccelerationRate = 70F, m_DecelerationRate = 90F;
 
-        public float playerJumpHeight = 25f;
-        
-        public Transform headPivot;
+        public float playerJumpHeight => 30F;
 
-        WpCamera currentCamera;
-        Vector3 m_bodyVelocity;
+        /// <summary>
+        /// <c>WpCamera</c> the character is using right now
+        /// </summary>
+        public WpCamera currentCamera { get; private set; }
+
+        private WpPlayerState m_PlayerState;
+        private Vector3 m_BodyVelocity, m_MotionVelocity;
 
         public override void Spawned() {
             if (!HasStateAuthority)
                 return;
 
+            m_CharacterController.enabled = true; // physx conflicts with network transform and doesn't let it overwrite Transform
+
             currentCamera = Camera.main.GetComponent<WpCamera>();
-            currentCamera.trackingTarget = headPivot;
+            currentCamera.trackingTarget = m_Head;
         }
 
         public override void FixedUpdateNetwork() {
-            if (!m_characterController.isGrounded) // add gravity if player is not standing on surface
-                m_bodyVelocity += Physics.gravity * Runner.DeltaTime;
+            // apply gravity to player
+            if (!m_CharacterController.isGrounded)
+                m_BodyVelocity += Physics.gravity * Runner.DeltaTime; // m/c^2
             else
-                m_bodyVelocity.y = WpInputManager.instance.playerInput.requestedJump ? playerJumpHeight : -1f; // or make him stick to the ground by doing this trick
+                m_BodyVelocity.y = 0;
 
-            var moveSpeed = playerSpeed * (WpInputManager.instance.playerInput.requestedSprint ? SPRINT_SPEED_MULTIPLIER : 1f);
+            // handle jump
+            if (m_CharacterController.isGrounded && m_PlayerState.isJumping)
+                m_ApplyJumpImpulse();
 
-            var inputDirection = new Vector3(WpInputManager.instance.playerInput.requestedMove.x, 0, WpInputManager.instance.playerInput.requestedMove.y);
-            var direction = Quaternion.AngleAxis(currentCamera.transform.eulerAngles.y, Vector3.up) * inputDirection * moveSpeed;
+            // rotate character towards camera direction
+            transform.localEulerAngles = new(0, currentCamera.transform.eulerAngles.y); // c# doesn't allow direct change of property structures ;(
 
-            m_bodyVelocity.x = direction.x; m_bodyVelocity.z = direction.z;
+            // add acceleration/deceleration to character movement
+            m_MotionVelocity = Vector3.MoveTowards(
+                current:          m_MotionVelocity,
+                target:           m_PlayerState.moveDirection * playerSpeed,
+                maxDistanceDelta: (m_PlayerState.moveDirection != Vector3.zero ? m_AccelerationRate : m_DecelerationRate) * Runner.DeltaTime
+            );
 
-            m_characterController.Move(m_bodyVelocity * Runner.DeltaTime);
+            _ = m_CharacterController.Move((m_BodyVelocity + Quaternion.AngleAxis(currentCamera.transform.eulerAngles.y, Vector3.up) * m_MotionVelocity) * Runner.DeltaTime);
+        }
+
+        /// <summary>
+        /// Moves character by a physics tick
+        /// </summary>
+        /// <param name="motion">Motion 2D vector</param>
+        public void Move(Vector2 motion) => m_PlayerState.moveDirection = new(motion.x, 0, motion.y);
+
+        /// <summary>
+        /// Forces character to crouch
+        /// </summary>
+        /// <param name="actionPerformed">Was the Crouch action performed by user?</param>
+        public void Crouch(bool actionPerformed) => m_PlayerState.isCrouching = actionPerformed;
+
+        /// <summary>
+        /// Forces character to jump
+        /// </summary>
+        /// <param name="actionPerformed">Was the Jump action performed by user?</param>
+        public void Jump(bool actionPerformed) => m_PlayerState.isJumping = actionPerformed;
+
+        /// <summary>
+        /// Forces character to sprint
+        /// </summary>
+        /// <param name="actionPerformed"></param>
+        public void Sprint(bool actionPerformed) => m_PlayerState.isSprinting = actionPerformed;
+
+        private void m_ApplyJumpImpulse() {
+            var results = new RaycastHit[1];
+            var raycastHits = Physics.RaycastNonAlloc(
+                ray:         new(m_Head.position, Vector3.up),
+                results:     results,
+                maxDistance: playerJumpHeight,
+                layerMask:   Physics.DefaultRaycastLayers,
+
+                queryTriggerInteraction: QueryTriggerInteraction.Ignore
+            );
+
+            m_BodyVelocity.y = raycastHits > 0 ? Vector3.Distance(m_Head.position, results[0].point) : playerJumpHeight;
         }
     }
 }

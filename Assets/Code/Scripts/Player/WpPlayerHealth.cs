@@ -2,11 +2,10 @@ using Fusion;
 using UnityEngine;
 
 namespace Wp.Player {
-    [type: DisallowMultipleComponent]
-    public class WpPlayerHealth : NetworkBehaviour, IDamageable {
+    public class WpPlayerHealth : NetworkBehaviour {
         [property: Networked, OnChangedRender(nameof(m_OnHealthChanged))]
-        public float health { get; set; } = 100f;
-        public float maxHealth => 100f;
+        public float health { get; set; } = 100F;
+        public float maxHealth => 100F;
 
         void m_OnHealthChanged() {
             Debug.Log($"Took damage. New health={health}f");
@@ -17,7 +16,6 @@ namespace Wp.Player {
             health -= Mathf.Lerp(damageAmount, 0, health);
         }
 
-        /* RPC_TakeDamage wrapper */
         public void TakeDamage(float damageAmount) {
             RPC_TakeDamage(damageAmount);
         }
