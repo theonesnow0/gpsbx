@@ -10,17 +10,12 @@ namespace Wp.Player {
         /// <summary>
         /// In which direction player character is moving?
         /// </summary>
-        public Vector3 moveDirection { get; set; }
+        public Vector2 moveDirection { get; set; }
 
         /// <summary>
-        /// Does the player character wants to jump?
+        /// Is the player character jumping?
         /// </summary>
         public bool isJumping { get; set; }
-
-        /// <summary>
-        /// Is the player character crouching?
-        /// </summary>
-        public bool isCrouching { get; set; }
 
         /// <summary>
         /// Is the player character sprinting?

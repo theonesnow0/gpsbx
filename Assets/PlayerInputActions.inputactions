@@ -37,6 +37,16 @@
                     "priority": 0
                 },
                 {
+                    "name": "Perspective",
+                    "type": "Button",
+                    "id": "2257e3ea-6b3a-4792-8006-922aae0b4299",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false,
+                    "priority": 0
+                },
+                {
                     "name": "Fire",
                     "type": "Button",
                     "id": "5fc7a5cb-05f0-4ebb-999c-0a1aee5c63b9",
@@ -261,6 +271,17 @@
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "2c6314d0-22e7-4bf3-9279-2ad959bc84a9",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Perspective",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

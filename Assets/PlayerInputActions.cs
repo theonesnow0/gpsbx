@@ -123,6 +123,16 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""priority"": 0
                 },
                 {
+                    ""name"": ""Perspective"",
+                    ""type"": ""Button"",
+                    ""id"": ""2257e3ea-6b3a-4792-8006-922aae0b4299"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false,
+                    ""priority"": 0
+                },
+                {
                     ""name"": ""Fire"",
                     ""type"": ""Button"",
                     ""id"": ""5fc7a5cb-05f0-4ebb-999c-0a1aee5c63b9"",
@@ -349,6 +359,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2c6314d0-22e7-4bf3-9279-2ad959bc84a9"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Perspective"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -382,6 +403,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Character_Move = m_Character.FindAction("Move", throwIfNotFound: true);
         m_Character_Look = m_Character.FindAction("Look", throwIfNotFound: true);
         m_Character_Zoom = m_Character.FindAction("Zoom", throwIfNotFound: true);
+        m_Character_Perspective = m_Character.FindAction("Perspective", throwIfNotFound: true);
         m_Character_Fire = m_Character.FindAction("Fire", throwIfNotFound: true);
         m_Character_Interact = m_Character.FindAction("Interact", throwIfNotFound: true);
         m_Character_Crouch = m_Character.FindAction("Crouch", throwIfNotFound: true);
@@ -470,6 +492,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Character_Move;
     private readonly InputAction m_Character_Look;
     private readonly InputAction m_Character_Zoom;
+    private readonly InputAction m_Character_Perspective;
     private readonly InputAction m_Character_Fire;
     private readonly InputAction m_Character_Interact;
     private readonly InputAction m_Character_Crouch;
@@ -498,6 +521,10 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Character/Zoom".
         /// </summary>
         public InputAction @Zoom => m_Wrapper.m_Character_Zoom;
+        /// <summary>
+        /// Provides access to the underlying input action "Character/Perspective".
+        /// </summary>
+        public InputAction @Perspective => m_Wrapper.m_Character_Perspective;
         /// <summary>
         /// Provides access to the underlying input action "Character/Fire".
         /// </summary>
@@ -553,6 +580,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Zoom.started += instance.OnZoom;
             @Zoom.performed += instance.OnZoom;
             @Zoom.canceled += instance.OnZoom;
+            @Perspective.started += instance.OnPerspective;
+            @Perspective.performed += instance.OnPerspective;
+            @Perspective.canceled += instance.OnPerspective;
             @Fire.started += instance.OnFire;
             @Fire.performed += instance.OnFire;
             @Fire.canceled += instance.OnFire;
@@ -588,6 +618,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Zoom.started -= instance.OnZoom;
             @Zoom.performed -= instance.OnZoom;
             @Zoom.canceled -= instance.OnZoom;
+            @Perspective.started -= instance.OnPerspective;
+            @Perspective.performed -= instance.OnPerspective;
+            @Perspective.canceled -= instance.OnPerspective;
             @Fire.started -= instance.OnFire;
             @Fire.performed -= instance.OnFire;
             @Fire.canceled -= instance.OnFire;
@@ -677,6 +710,13 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnZoom(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Perspective" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnPerspective(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Fire" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

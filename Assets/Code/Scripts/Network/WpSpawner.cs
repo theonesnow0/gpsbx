@@ -4,7 +4,6 @@ using UnityEngine;
 namespace Wp.Network {
     public class WpSpawner : SimulationBehaviour, IPlayerJoined {
         [field: SerializeField] private GameObject m_PlayerPrefab;
-        [field: SerializeField] private Transform m_SpawnPoint;
 
         public void PlayerJoined(PlayerRef player) {
             if (Runner.LocalPlayer == player)
