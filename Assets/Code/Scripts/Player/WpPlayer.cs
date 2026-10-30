@@ -1,43 +1,54 @@
-using Fusion;
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Wp.Cinematic;
 
 namespace Wp.Player {
-    public class WpPlayer : NetworkBehaviour, PlayerInputActions.ICharacterActions {
+    public class WpPlayer : MonoBehaviour, PlayerInputActions.ICharacterActions {
         [field: SerializeField] private WpPlayerMovement m_PlayerMovement;
-        [field: SerializeField] private WpPlayerInventory m_PlayerInventory;
 
-        private PlayerInputActions m_PlayerActions;
-        private PlayerInputActions.CharacterActions m_CharacterActions;
+        private PlayerInputActions m_Actions;
+        private PlayerInputActions.CharacterActions m_Character;
+
+        /// <summary>
+        /// Current player state (e.g. jumping, crouching, going in some direction etc.)
+        /// </summary>
+        public WpPlayerState playerState => m_PlayerStateInner;
+        private WpPlayerState m_PlayerStateInner = new();
 
         private void Awake() {
-            m_PlayerActions = new();
+            m_Actions = new();
 
-            m_CharacterActions = m_PlayerActions.Character;
-            m_CharacterActions.AddCallbacks(this);
+            m_Character = m_Actions.Character;
+            m_Character.AddCallbacks(this);
         }
 
-        private void OnDestroy() => m_PlayerActions.Dispose();
+        private void OnDestroy() => m_Actions.Dispose();
 
-        private void OnEnable() => m_CharacterActions.Enable();
+        private void OnEnable() => m_Character.Enable();
 
-        private void OnDisable() => m_CharacterActions.Disable();
+        private void OnDisable() => m_Character.Disable();
 
-        public void OnMove(InputAction.CallbackContext context) => m_PlayerMovement.Move(context.ReadValue<Vector2>());
+        void PlayerInputActions.ICharacterActions.OnMove(InputAction.CallbackContext context) => m_PlayerStateInner.moveDirection = context.ReadValue<Vector2>();
 
-        public void OnLook(InputAction.CallbackContext context) => m_PlayerMovement.currentCamera.Look(context.ReadValue<Vector2>());
+        void PlayerInputActions.ICharacterActions.OnJump(InputAction.CallbackContext context) => m_PlayerStateInner.isJumping = context.performed;
 
-        public void OnZoom(InputAction.CallbackContext context) => m_PlayerMovement.currentCamera.Zoom(context.ReadValue<float>());
+        void PlayerInputActions.ICharacterActions.OnSprint(InputAction.CallbackContext context) => m_PlayerStateInner.isSprinting = context.performed;
 
-        public void OnFire(InputAction.CallbackContext _) => throw new NotImplementedException();
+        void PlayerInputActions.ICharacterActions.OnCrouch(InputAction.CallbackContext context) => throw new NotImplementedException();
 
-        public void OnInteract(InputAction.CallbackContext _) => throw new NotImplementedException();
+        void PlayerInputActions.ICharacterActions.OnFire(InputAction.CallbackContext context) => throw new NotImplementedException();
 
-        public void OnCrouch(InputAction.CallbackContext context) => m_PlayerMovement.Crouch(context.performed);
+        void PlayerInputActions.ICharacterActions.OnInteract(InputAction.CallbackContext context) => throw new NotImplementedException();
 
-        public void OnJump(InputAction.CallbackContext context) => m_PlayerMovement.Jump(context.performed);
+        void PlayerInputActions.ICharacterActions.OnLook(InputAction.CallbackContext context) => m_PlayerMovement.currentCamera.Look(context.ReadValue<Vector2>());
 
-        public void OnSprint(InputAction.CallbackContext context) => m_PlayerMovement.Sprint(context.performed);
+        void PlayerInputActions.ICharacterActions.OnZoom(InputAction.CallbackContext context) => m_PlayerMovement.currentCamera.Zoom(context.ReadValue<float>());
+
+        void PlayerInputActions.ICharacterActions.OnPerspective(InputAction.CallbackContext context) {
+            var value = m_PlayerMovement.currentCamera.perspectiveMode;
+            m_PlayerMovement.currentCamera.perspectiveMode = (WpCameraPerspective)(((int)value + 1) % 2); // tf
+        }
     }
 }
